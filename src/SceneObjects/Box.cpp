@@ -11,6 +11,7 @@ bool Box::intersectLocal( const ray& r, isect& i ) const
 	
 	double tFar = numeric_limits<double>::infinity();
 	double tNear =- numeric_limits<double>::infinity();
+	int tNearAxis = 0;
 	double tMin = -0.5;
 	double tMax = 0.5;
 
@@ -31,8 +32,11 @@ bool Box::intersectLocal( const ray& r, isect& i ) const
 			if (t1 > t2) {
 				std::swap(t1, t2);
 			}
-			if (t1 > tNear)//largest tNear
+			if (t1 > tNear) {//largest tNear
 				tNear = t1;
+				// for setting normal
+				tNearAxis = axis;
+			}
 			if (t2 < tFar)//smallest tFar
 				tFar= t2;
 			if (tNear > tFar)//box is missed
@@ -43,6 +47,11 @@ bool Box::intersectLocal( const ray& r, isect& i ) const
 	}
 	// intersect! set object material
 	i.obj = this;
-	//TODO: set normal
+	//set normal
+	i.setT(tNear);
+	vec3f normal(0.0,0.0,0.0);
+	normal[tNearAxis] = (r.getDirection()[tNearAxis] < 0.0) ? 1.0 : -1.0;
+	i.setN(normal);
+
 	return true;
 }
