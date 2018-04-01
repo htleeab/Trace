@@ -52,17 +52,4 @@ protected:
 	double constant_attenuation_coeff, linear_attenuation_coeff, quadratic_attenuation_coeff;
 };
 
-/*
-class AmbientLight
-	: public Light
-{
-public:
-	AmbientLight(Scene *scene, const vec3f& color)
-		: Light(scene, color){}
-	virtual vec3f shadowAttenuation(const vec3f& P) const;
-	virtual double distanceAttenuation(const vec3f& P)const;
-	virtual vec3f getColor(const vec3f& P)const;
-	virtual vec3f getDirection(const vec3f& P) const;
-};
-*/
 #endif // __LIGHT_H__
