@@ -199,3 +199,13 @@ void Scene::initScene()
 			nonboundedobjects.push_back(*j);
 	}
 }
+
+vec3f Scene::getAmbientLight() {
+	return ambientLight;
+}
+
+
+void Scene::setAmbientLight(vec3f _ambientLight) {
+	ambientLight += _ambientLight;
+	ambientLight.clamp();
+}
