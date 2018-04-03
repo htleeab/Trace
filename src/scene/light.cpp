@@ -13,11 +13,14 @@ vec3f DirectionalLight::shadowAttenuation( const vec3f& P ) const
 {
     // YOUR CODE HERE:
     // You should implement shadow-handling code here.
+	
 	vec3f d = getDirection(P).normalize();
-	ray R(P, d);
 	isect i;
+	ray R = ray(P, d);
 	vec3f result = getColor(P);
 	while (scene->intersect(R, i)) {
+		if (i.getMaterial().kt.iszero()) // transparent: skip the next ray
+			return vec3f(0.0, 0.0, 0.0);
 		R = ray(R.at(i.t), d);
 		result = prod(result, i.getMaterial().kt);
 	}
