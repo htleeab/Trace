@@ -34,7 +34,8 @@ vec3f Material::shade( Scene *scene, const ray& r, const isect& i ) const
 		vec3f R = 2 * (Lj.dot(i.N)) * i.N - Lj;
 		vec3f v = -r.getDirection();
 		vec3f specular = ks * pow(maximum(R.dot(v), 0.0), shininess*128.0);
-		shade += prod( (*j)->getColor(P) , (diffuse + specular) )* (*j)->distanceAttenuation(P);
+		shade += prod( prod( (*j)->getColor(P) , (diffuse + specular) )* (*j)->distanceAttenuation(P) , (*j)->shadowAttenuation(P));
+
 	}
 	return shade.clamp();
 }
