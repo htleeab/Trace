@@ -6,6 +6,8 @@
 #include "scene/scene.h"
 #include "scene/ray.h"
 
+#include <stack>
+
 class RayTracer
 {
 public:
@@ -31,6 +33,8 @@ private:
 	int buffer_width, buffer_height;
 	int bufferSize;
 	Scene *scene;
+
+	stack<Material> m_stack;
 
 	bool m_bSceneLoaded;
 };
