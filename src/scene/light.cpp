@@ -49,7 +49,7 @@ double PointLight::distanceAttenuation( const vec3f& P ) const
 
 	double coeff = constant_attenuation_coeff + linear_attenuation_coeff * (P - position).length() + quadratic_attenuation_coeff*(position - P).length_squared();
 	
-	printf("%f, %f, %f, %f,,, ", constant_attenuation_coeff, linear_attenuation_coeff, quadratic_attenuation_coeff, coeff);
+	//printf("%f, %f, %f, %f,,, ", constant_attenuation_coeff, linear_attenuation_coeff, quadratic_attenuation_coeff, coeff);
 	if (coeff <= 0.0) return 1;
 		
 	return minimum(1.0, 1.0 / coeff);
