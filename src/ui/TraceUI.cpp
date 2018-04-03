@@ -92,6 +92,21 @@ void TraceUI::cb_depthSlides(Fl_Widget* o, void* v)
 	((TraceUI*)(o->user_data()))->m_nDepth=int( ((Fl_Slider *)o)->value() ) ;
 }
 
+void TraceUI::cb_constant_att_Slides(Fl_Widget * o, void * v)
+{
+	((TraceUI*)(o->user_data()))->m_nConstant_att = double(((Fl_Slider *)o)->value());
+}
+
+void TraceUI::cb_linear_att_Slides(Fl_Widget * o, void * v)
+{
+	((TraceUI*)(o->user_data()))->m_nLinear_att = double(((Fl_Slider *)o)->value());
+}
+
+void TraceUI::cb_quadric_att_Slides(Fl_Widget * o, void * v)
+{
+	((TraceUI*)(o->user_data()))->m_nQuadric_att = double(((Fl_Slider *)o)->value());
+}
+
 void TraceUI::cb_render(Fl_Widget* o, void* v)
 {
 	char buffer[256];
@@ -195,6 +210,24 @@ int TraceUI::getDepth()
 	return m_nDepth;
 }
 
+void TraceUI::set_m_nConstant_att(double d)
+{
+	m_nConstant_att = d;
+	m_constant_att_Slider->value(d);
+}
+
+void TraceUI::set_m_nLinear_att(double d)
+{
+	m_nLinear_att = d;
+	m_linear_att_Slider->value(d);
+}
+
+void TraceUI::set_m_nQuadric_att(double d)
+{
+	m_nQuadric_att = d;
+	m_quadric_att_Slider->value(d);
+}
+
 // menu definition
 Fl_Menu_Item TraceUI::menuitems[] = {
 	{ "&File",		0, 0, 0, FL_SUBMENU },
@@ -214,7 +247,12 @@ TraceUI::TraceUI() {
 	// init.
 	m_nDepth = 0;
 	m_nSize = 150;
-	m_mainWindow = new Fl_Window(100, 40, 320, 100, "Ray <Not Loaded>");
+
+	m_nConstant_att = 0.02;
+	m_nLinear_att = 0.02;
+	m_nQuadric_att = 0.05;
+
+	m_mainWindow = new Fl_Window(100, 40, 320, 300, "Ray <Not Loaded>");
 		m_mainWindow->user_data((void*)(this));	// record self to be used by static callback functions
 		// install menu bar
 		m_menubar = new Fl_Menu_Bar(0, 0, 320, 25);
@@ -253,6 +291,45 @@ TraceUI::TraceUI() {
 		m_stopButton = new Fl_Button(240, 55, 70, 25, "&Stop");
 		m_stopButton->user_data((void*)(this));
 		m_stopButton->callback(cb_stop);
+
+		// install slider constant attenuation
+		m_constant_att_Slider = new Fl_Value_Slider(10, 80, 180, 20, "constant attenuation");
+		m_constant_att_Slider->user_data((void*)(this));	// record self to be used by static callback functions
+		m_constant_att_Slider->type(FL_HOR_NICE_SLIDER);
+		m_constant_att_Slider->labelfont(FL_COURIER);
+		m_constant_att_Slider->labelsize(12);
+		m_constant_att_Slider->minimum(0);
+		m_constant_att_Slider->maximum(0.1);
+		m_constant_att_Slider->step(0.001);
+		m_constant_att_Slider->value(m_nConstant_att);
+		m_constant_att_Slider->align(FL_ALIGN_RIGHT);
+		m_constant_att_Slider->callback(cb_constant_att_Slides);
+
+		// install slider linear attenuation
+		m_linear_att_Slider = new Fl_Value_Slider(10, 105, 180, 20, "linear attenuation");
+		m_linear_att_Slider->user_data((void*)(this));	// record self to be used by static callback functions
+		m_linear_att_Slider->type(FL_HOR_NICE_SLIDER);
+		m_linear_att_Slider->labelfont(FL_COURIER);
+		m_linear_att_Slider->labelsize(12);
+		m_linear_att_Slider->minimum(0);
+		m_linear_att_Slider->maximum(0.1);
+		m_linear_att_Slider->step(0.001);
+		m_linear_att_Slider->value(m_nLinear_att);
+		m_linear_att_Slider->align(FL_ALIGN_RIGHT);
+		m_linear_att_Slider->callback(cb_linear_att_Slides);
+
+		// install slider quadric attenuation
+		m_quadric_att_Slider = new Fl_Value_Slider(10, 130, 180, 20, "quadric attenuation");
+		m_quadric_att_Slider->user_data((void*)(this));	// record self to be used by static callback functions
+		m_quadric_att_Slider->type(FL_HOR_NICE_SLIDER);
+		m_quadric_att_Slider->labelfont(FL_COURIER);
+		m_quadric_att_Slider->labelsize(12);
+		m_quadric_att_Slider->minimum(0);
+		m_quadric_att_Slider->maximum(0.1);
+		m_quadric_att_Slider->step(0.001);
+		m_quadric_att_Slider->value(m_nQuadric_att);
+		m_quadric_att_Slider->align(FL_ALIGN_RIGHT);
+		m_quadric_att_Slider->callback(cb_quadric_att_Slides);
 
 		m_mainWindow->callback(cb_exit2);
 		m_mainWindow->when(FL_HIDE);
